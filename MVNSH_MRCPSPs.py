@@ -405,7 +405,7 @@ def check_unique(feas_uni):
         ff = feas_uni[:i]+feas_uni[i+1:]
         if f in ff:
             ii = ff.index(f)
-            print(i, ":", f, "same", ii)
+            # print(i, ":", f, "same", ii)
             isunique = False
     return isunique
 
@@ -424,7 +424,7 @@ def swap(BS_uni):
         CS = BS_uni[p]
         for k in range(1,len(A)-1):    # k: activities available in project, excluding dummy end nodes, start from activity 1
             activity = CS[k]
-            print("\n", k,":", activity, BS_uni[p])
+            # print("\n", k,":", activity, BS_uni[p])
 
             # forward swap
             CS_copy_f = copy.deepcopy(CS)
@@ -432,10 +432,10 @@ def swap(BS_uni):
                 id1 = CS_copy_f.index(activity)
                 if ifswap(CS_copy_f[id1],CS_copy_f[k+i],CS_copy_f):   # apply constraints
                     CS_copy_f[id1],CS_copy_f[k+i] = CS_copy_f[k+i],CS_copy_f[id1]
-                    print(p,k,i,CS_copy_f)
+                    # print(p,k,i,CS_copy_f)
                     if CS_copy_f not in AS:   # if unique
                         cnt += 1
-                        print(cnt, "Forward PICK: ", CS_copy_f)
+                        # print(cnt, "Forward PICK: ", CS_copy_f)
                         find = copy.deepcopy(CS_copy_f)
                         AS.append(find)
 
@@ -445,10 +445,10 @@ def swap(BS_uni):
                 id2 = CS_copy_b.index(activity)
                 if ifswap(CS_copy_b[k-j-1],CS_copy_b[id2],CS_copy_b):  # apply constraints
                     CS_copy_b[id2],CS_copy_b[k-j-1] = CS_copy_b[k-j-1],CS_copy_b[id2]
-                    print(p,k,j,CS_copy_b)
+                    # print(p,k,j,CS_copy_b)
                     if CS_copy_b not in AS:   # if unique
                         cnt += 1
-                        print(cnt, "Backward PICK: ", CS_copy_b)
+                        # print(cnt, "Backward PICK: ", CS_copy_b)
                         find = copy.deepcopy(CS_copy_b)
                         AS.append(find)
     
@@ -485,8 +485,8 @@ def modified_makespan(feas, d_im,P_prec,r,R_r,U_imr,nr=None,R_nr=None,U_imnr=Non
     D_i, U_i, U_im = data_process(A,d_im,U_imr)
     Prec_i = get_pred(P_prec)
         
-    # while len(uni(C_g, A_g)) <= len(A):
-    while len(C_g) <= len(A):
+    while len(uni(C_g, A_g)) <= len(A)-2:
+    # while len(C_g) <= len(A):
 
         g += 1
         t += 1
@@ -516,12 +516,12 @@ def modified_makespan(feas, d_im,P_prec,r,R_r,U_imr,nr=None,R_nr=None,U_imnr=Non
         Rr_g = R_r - np.sum(Rr_g,axis=0)
         # Rnr_g = 
 
-        print("iter: ",g)
-        print("Complete: ",C_g)
-        print("Activate: ",A_g)
-        # print("Eligible: ",E_g)
-        print("SubE: ",SE_g)
-        print("\n")
+        # print("iter: ",g)
+        # print("Complete: ",C_g)
+        # print("Activate: ",A_g)
+        # # print("Eligible: ",E_g)
+        # print("SubE: ",SE_g)
+        # print("\n")
 
         if len(C_g) == len(A)-1:
             print("end: ",C_g)
@@ -531,10 +531,9 @@ def modified_makespan(feas, d_im,P_prec,r,R_r,U_imr,nr=None,R_nr=None,U_imnr=Non
             i_next = feas[k]
             u_i_next = U_im[i_next]
 
-            print("k: ", k)
-            print("i = ", i_next)
-            print("Rr_g: \n", Rr_g)
-            # i_next = priority_rule(E_g)
+            # print("k: ", k)
+            # print("i = ", i_next)
+            # print("Rr_g: \n", Rr_g)
             
             out = False
             if i_next != 1:
@@ -556,10 +555,10 @@ def modified_makespan(feas, d_im,P_prec,r,R_r,U_imr,nr=None,R_nr=None,U_imnr=Non
                     SE_g = uni(SE_g, [i_next])
                     A_g = uni(A_g, [i_next])
                     Rr_g -= u_i_next
-                    print("i: ",i_next, t_g)
+                    # print("i: ",i_next, t_g)
                     s[r_id][i_next-1] = t_g
                 else:
-                    print("false: ", i_next)
+                    # print("false: ", i_next)
                     SE_g = SE_g
                     A_g = A_g
                     NS_g = k
@@ -577,36 +576,45 @@ def modified_makespan(feas, d_im,P_prec,r,R_r,U_imr,nr=None,R_nr=None,U_imnr=Non
 def MVNSH(runMax,fBest):
     run = 0
     start = time.time()
-    
+    bestknown = []
     while run <= runMax:
-        print("1")
+        ss = time.time()
+        print("Initializing...")
         s,f,order = initial_schedule2(d_im,P_prec,num_r,R_r,U_imr)
         makespan = max(f.flatten())
         if makespan == fBest:
-            print("2")
+            bestknown.append(makespan)
             break
         else:
+            print("Shaking...")
             ord_list = [o[0] for o in list(order.values())]
             feas_uni = swap([ord_list])
 
-            u_s,u_f,u_makespan = modified_makespan(feas_uni[0],d_im,P_prec,num_r,R_r,U_imr)
+            print("Local searching...")
+            idx = random.randint(0,len(feas_uni)-1)
+            feas_uni = feas_uni[idx]
+            print(feas_uni)
+            u_s,u_f,u_makespan = modified_makespan(feas_uni,d_im,P_prec,num_r,R_r,U_imr)
 
             if u_makespan == fBest:
-                makespan = u_makespan
-                print("3")
+                bestknown.append(u_makespan)
                 break
             else:
-                makespan = min(makespan, u_makespan)
+                bestknown.append(min(makespan, u_makespan))
                 run += 1
-    
+        ee = time.time()
+        print("[run]: ", run)
+        print("[time]: ", ee-ss)
+        print("makespan = ", min(bestknown))
+
     end = time.time()
     tspan = end-start
 
-    print("run: ", run)
-    print("makespan: ", makespan)
-    print("time: ", tspan)
+    print("total run: ", run)
+    print("makespan: ", min(bestknown))
+    print("total time: ", tspan)
 
-    return makespan, tspan
+    return min(bestknown), tspan
 
 if __name__ == "__main__":
     MVNSH(runMax,fBest)
