@@ -20,9 +20,11 @@ path = "/content/gdrive/My Drive/635project/"
 runMax=30
 fBest=15
 
+"""Main: whole procedures"""
 def MVNSH(runMax,fBest):
     run = 0
     # makespan = 0
+    start = time.time()
     while run <= runMax:
         s,f,order = initial_schedule2(d_im,P_prec,num_r,R_r,U_imr)
         makespan = max(f.flatten())
@@ -39,5 +41,6 @@ def MVNSH(runMax,fBest):
             else:
                 makespan = min(makespan, u_makespan)
                 run += 1
-
-    return makespan
+    end = time.time()
+    tspan = end-start
+    return makespan, tspan
