@@ -26,9 +26,11 @@ def MVNSH(runMax,fBest):
     # makespan = 0
     start = time.time()
     while run <= runMax:
+        print("1")
         s,f,order = initial_schedule2(d_im,P_prec,num_r,R_r,U_imr)
         makespan = max(f.flatten())
         if makespan == fBest:
+            print("2")
             break
         else:
             ord_list = [o[0] for o in list(order.values())]
@@ -37,10 +39,21 @@ def MVNSH(runMax,fBest):
             u_s,u_f,u_makespan = modified_makespan(feas_uni[0],d_im,P_prec,num_r,R_r,U_imr)
 
             if u_makespan == fBest:
+                makespan = u_makespan
+                print("3")
                 break
             else:
                 makespan = min(makespan, u_makespan)
                 run += 1
+    
     end = time.time()
     tspan = end-start
+
+    print("run: ", run)
+    print("makespan: ", makespan)
+    print("time: ", tspan)
+
     return makespan, tspan
+
+if __name__ == "__main__":
+    MVNSH(runMax,fBest)
