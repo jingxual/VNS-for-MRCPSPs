@@ -1,10 +1,10 @@
 """Shaking phase: swap/move"""
-runMax = 1000
+run = 1000
 
-def generate_init(runMax):
+def generate_init(runs):
     orders = []
     ord_dic = {}
-    for k in range(runMax):
+    for k in range(runs):
         sk,fk,ok = initial_schedule2(d_im,P_prec,num_r,R_r,U_imr)
         f = max(fk.flatten())
         ord = [o[0] for o in list(ok.values())]
