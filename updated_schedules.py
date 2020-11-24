@@ -23,7 +23,7 @@ def modified_makespan(feas, d_im,P_prec,r,R_r,U_imr,nr=None,R_nr=None,U_imnr=Non
     D_i, U_i, U_im = data_process(A,d_im,U_imr)
     Prec_i = get_pred(P_prec)
         
-    while len(uni(C_g, A_g)) <= len(A)-2:
+    while len(uni(C_g, A_g)) <= len(A)-2 and t <= tMax:
     # while len(C_g) <= len(A):
 
         g += 1
