@@ -8,9 +8,13 @@ import matplotlib.pyplot as plt
 
 import pdb
 
-import 
-path = "/content/gdrive/My Drive/635project/"
+import data
+import helpers
+import shake
+import init_schedules
+import updated_schedules
 
+path = "/content/gdrive/My Drive/635project/"
 
 runMax=30
 fBest=15
