@@ -23,14 +23,12 @@ fBest=15
 """Main: whole procedures"""
 def MVNSH(runMax,fBest):
     run = 0
-    # makespan = 0
     start = time.time()
+    
     while run <= runMax:
-        print("1")
         s,f,order = initial_schedule2(d_im,P_prec,num_r,R_r,U_imr)
         makespan = max(f.flatten())
         if makespan == fBest:
-            print("2")
             break
         else:
             ord_list = [o[0] for o in list(order.values())]
@@ -40,7 +38,6 @@ def MVNSH(runMax,fBest):
 
             if u_makespan == fBest:
                 makespan = u_makespan
-                print("3")
                 break
             else:
                 makespan = min(makespan, u_makespan)
