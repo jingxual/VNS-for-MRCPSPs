@@ -485,7 +485,7 @@ def modified_makespan(feas, d_im,P_prec,r,R_r,U_imr,nr=None,R_nr=None,U_imnr=Non
     D_i, U_i, U_im = data_process(A,d_im,U_imr)
     Prec_i = get_pred(P_prec)
         
-    while len(uni(C_g, A_g)) <= len(A)-2:
+    while len(uni(C_g, A_g)) <= len(A)-2 and t <= tMax:
     # while len(C_g) <= len(A):
 
         g += 1
@@ -575,8 +575,9 @@ def modified_makespan(feas, d_im,P_prec,r,R_r,U_imr,nr=None,R_nr=None,U_imnr=Non
 """Main: whole procedures"""
 def MVNSH(runMax,fBest):
     run = 0
-    start = time.time()
     bestknown = []
+
+    start = time.time()
     while run <= runMax:
         ss = time.time()
         print("Initializing...")
@@ -600,8 +601,9 @@ def MVNSH(runMax,fBest):
                 bestknown.append(u_makespan)
                 break
             else:
-                bestknown.append(min(makespan, u_makespan))
-                run += 1
+                if u_makespan > fBest:
+                    bestknown.append(min(makespan, u_makespan))
+                    run += 1
         ee = time.time()
         print("[run]: ", run)
         print("[time]: ", ee-ss)
@@ -609,7 +611,6 @@ def MVNSH(runMax,fBest):
 
     end = time.time()
     tspan = end-start
-
     print("total run: ", run)
     print("makespan: ", min(bestknown))
     print("total time: ", tspan)
