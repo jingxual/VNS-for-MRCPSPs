@@ -23,8 +23,8 @@ def modified_makespan(feas, d_im,P_prec,r,R_r,U_imr,nr=None,R_nr=None,U_imnr=Non
     D_i, U_i, U_im = data_process(A,d_im,U_imr)
     Prec_i = get_pred(P_prec)
         
-    # while len(uni(C_g, A_g)) <= len(A):
-    while len(C_g) <= len(A):
+    while len(uni(C_g, A_g)) <= len(A)-2:
+    # while len(C_g) <= len(A):
 
         g += 1
         t += 1
@@ -54,12 +54,12 @@ def modified_makespan(feas, d_im,P_prec,r,R_r,U_imr,nr=None,R_nr=None,U_imnr=Non
         Rr_g = R_r - np.sum(Rr_g,axis=0)
         # Rnr_g = 
 
-        print("iter: ",g)
-        print("Complete: ",C_g)
-        print("Activate: ",A_g)
-        # print("Eligible: ",E_g)
-        print("SubE: ",SE_g)
-        print("\n")
+        # print("iter: ",g)
+        # print("Complete: ",C_g)
+        # print("Activate: ",A_g)
+        # # print("Eligible: ",E_g)
+        # print("SubE: ",SE_g)
+        # print("\n")
 
         if len(C_g) == len(A)-1:
             print("end: ",C_g)
@@ -69,17 +69,16 @@ def modified_makespan(feas, d_im,P_prec,r,R_r,U_imr,nr=None,R_nr=None,U_imnr=Non
             i_next = feas[k]
             u_i_next = U_im[i_next]
 
-            print("k: ", k)
-            print("i = ", i_next)
-            print("Rr_g: \n", Rr_g)
-            # i_next = priority_rule(E_g)
+            # print("k: ", k)
+            # print("i = ", i_next)
+            # print("Rr_g: \n", Rr_g)
             
             out = False
             if i_next != 1:
                 i_prec = Prec_i[i_next]
                 for ip in i_prec:
                     if ip not in C_g:
-                        print("ip: ",ip)
+                        # print("ip: ",ip)
                         NS_g = k
                         out = True
                         break
@@ -94,10 +93,10 @@ def modified_makespan(feas, d_im,P_prec,r,R_r,U_imr,nr=None,R_nr=None,U_imnr=Non
                     SE_g = uni(SE_g, [i_next])
                     A_g = uni(A_g, [i_next])
                     Rr_g -= u_i_next
-                    print("i: ",i_next, t_g)
+                    # print("i: ",i_next, t_g)
                     s[r_id][i_next-1] = t_g
                 else:
-                    print("false: ", i_next)
+                    # print("false: ", i_next)
                     SE_g = SE_g
                     A_g = A_g
                     NS_g = k
