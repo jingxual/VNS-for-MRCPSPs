@@ -23,8 +23,9 @@ fBest=15
 """Main: whole procedures"""
 def MVNSH(runMax,fBest):
     run = 0
-    start = time.time()
     bestknown = []
+
+    start = time.time()
     while run <= runMax:
         ss = time.time()
         print("Initializing...")
@@ -48,8 +49,9 @@ def MVNSH(runMax,fBest):
                 bestknown.append(u_makespan)
                 break
             else:
-                bestknown.append(min(makespan, u_makespan))
-                run += 1
+                if u_makespan > fBest:
+                    bestknown.append(min(makespan, u_makespan))
+                    run += 1
         ee = time.time()
         print("[run]: ", run)
         print("[time]: ", ee-ss)
@@ -57,7 +59,6 @@ def MVNSH(runMax,fBest):
 
     end = time.time()
     tspan = end-start
-
     print("total run: ", run)
     print("makespan: ", min(bestknown))
     print("total time: ", tspan)
