@@ -1,5 +1,6 @@
 # VNS-for-MRCPSPs
 
-### Implementation of MVNSH algorithm based on the paper https://doi.org/10.1111/itor.12644
+## Implementation of MVNSH algorithm in Python
+#### paper https://doi.org/10.1111/itor.12644
 
-### Run MVNSH_MRSPCPs.py
+#### run MVNSH_MRSPCPs.py
