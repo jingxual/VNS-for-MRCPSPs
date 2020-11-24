@@ -29,7 +29,8 @@ def MVNSH(runMax,fBest):
         if makespan == fBest:
             break
         else:
-            feas_uni = swap([order])
+            ord_list = [o[0] for o in list(order.values())]
+            feas_uni = swap([ord_list])
 
             u_s,u_f,u_makespan = modified_makespan(feas_uni[0],d_im,P_prec,num_r,R_r,U_imr)
 
